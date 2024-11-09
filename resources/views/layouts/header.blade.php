@@ -68,5 +68,22 @@
           <i class="fas fa-expand-arrows-alt"></i>
         </a>
       </li>
+
+      <!-- Profile Menu -->
+      <li class="nav-item">
+        {{-- <a href="{{ route('profil.index') }}" class="nav-link" title="Edit Profil"> --}}
+          <i class="fas fa-user"></i>
+        </a>
+      </li>
+
+    <!-- Logout Menu -->
+      <li class="nav-item">
+        {{-- <form action="{{ url('logout') }}" method="POST" role="button"> --}}
+          @csrf
+          <button type="submit" class="btn btn-danger">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </form>
+      </li>
     </ul>
   </nav>

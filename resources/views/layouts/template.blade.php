@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{url('/plugins/fontawesome-free/css/all.min.css')}}">
+  <script src="https://kit.fontawesome.com/f2110b96b9.js" crossorigin="anonymous"></script>
   <!-- Theme style -->
   <link rel="stylesheet" href="{{url('/dist/css/adminlte.min.css')}}">
 </head>
@@ -23,8 +24,8 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{url('/')}}" class="brand-link">
-      <img src="{{url('/dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <img src="{{url('/dist/img/Logo.png')}}" alt="AdminLTE Logo" class="brand-image img-cube" height="100px" style="opacity: 100">
+      <span class="brand-text font-weight-light">HRSync</span>
     </a>
 
     <!-- Sidebar -->
