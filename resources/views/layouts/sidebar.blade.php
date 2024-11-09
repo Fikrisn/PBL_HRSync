@@ -19,7 +19,7 @@
             <p>Dashboard</p>
           </a>
         </li>
-        {{-- @if(auth()->user()->jenispengguna->jenis_kode == "ADM") --}}
+        @if(auth()->user()->jenispengguna->jenis_kode == "ADM")
         <li class="nav-header">Data Pengguna</li>
           <li class="nav-item">
             <a href="{{ url('/jenis_pengguna')}}" class="nav-link {{($activeMenu == 'jenis_pengguna')? 'active' : ''}}">
@@ -52,8 +52,8 @@
               <p>Statistik </p>
             </a>
           </li>
-          {{-- @endif --}}
-        {{-- @if(auth()->user()->jenispengguna->jenis_kode == "PMN") --}}
+          @endif
+        @if(auth()->user()->jenispengguna->jenis_kode == "PMN")
         <li class="nav-header">Data Kegiatan</li>
           <li class="nav-item">
             <a href="{{ url('/level')}}" class="nav-link {{($activeMenu == 'level')? 'active' : ''}}">
@@ -73,8 +73,8 @@
               <p>Data Dosen</p>
             </a>
           </li>
-        {{-- @endif
-        @if(auth()->user()->jenispengguna->jenis_kode == "DPC") --}}
+        @endif
+        @if(auth()->user()->jenispengguna->jenis_kode == "DPC")
         <li class="nav-header">Data Kegiatan</li>
           <li class="nav-item">
             <a href="{{ url('/level')}}" class="nav-link {{($activeMenu == 'level')? 'active' : ''}}">
@@ -107,8 +107,8 @@
               <p>Statistik </p>
             </a>
           </li>
-        {{-- @endif
-        @if(auth()->user()->jenispengguna->jenis_kode == "DSA") --}}
+        @endif
+        @if(auth()->user()->jenispengguna->jenis_kode == "DSA")
         <li class="nav-header">Data Kegiatan</li>
           <li class="nav-item">
             <a href="{{ url('/level')}}" class="nav-link {{($activeMenu == 'level')? 'active' : ''}}">
@@ -129,7 +129,7 @@
               <p>Poin Ku</p>
             </a>
           </li>
-        {{-- @endif --}}
+        @endif
       </ul>
     </nav>
   </div>

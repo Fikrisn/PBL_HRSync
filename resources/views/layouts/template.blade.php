@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ config('app.name','HRSync')}}</title>
+  <link rel="icon" href="{{ url('polinema.png') }}" type="image/png">
+  <title>{{ $title ?? 'HRSync' }}</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -56,7 +57,5 @@
 <script src="{{url('/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{url('/dist/js/adminlte.min.js')}}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{url('/dist/js/demo.js')}}"></script>
 </body>
 </html>
