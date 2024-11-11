@@ -1,4 +1,4 @@
-@extends('layouts.template')
+-@extends('layouts.template')
 @section('content')
     <div class="card card-outline card-primary">
         <div class="card-header">
@@ -20,10 +20,10 @@
             <table class="table table-bordered table-striped table-hover table-sm" id="table_jenis_pengguna">
                 <thead>
                     <tr>
-                        <th style="width: 5%; text-align: center;">ID</th>
-                        <th style="width: 35%; text-align: center;">Nama Jenis Pengguna</th>
-                        <th style="width: 30%; text-align: center;">Bobot</th>
-                        <th style="width: 30%; text-align: center;">Aksi</th>
+                        <th>ID</th>
+                        <th>Nama Jenis Pengguna</th>
+                        <th>Bobot</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
             </table>
@@ -49,6 +49,9 @@
                     "url": "{{ route('jenis_pengguna.list') }}",
                     "dataType": "json",
                     "type": "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
                     "data": function (d) {
                         d.id_jenis_pengguna = $('#id_jenis_pengguna').val();
                     },

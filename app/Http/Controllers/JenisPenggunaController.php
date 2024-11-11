@@ -37,7 +37,9 @@ class JenisPenggunaController extends Controller
 
     public function list(Request $request)
     {
-        $jenis_pengguna = JenisPenggunaModel::select('id_jenis_pengguna', 'nama_jenis_pengguna', 'bobot', 'jenis_kode', 'created_at', 'updated_at');
+        // $jenis_pengguna = JenisPenggunaModel::select('id_jenis_pengguna', 'nama_jenis_pengguna', 'bobot', 'jenis_kode', 'created_at', 'updated_at');
+
+        $jenis_pengguna = JenisPenggunaModel::all();
 
         if ($request->id_jenis_pengguna) {
             $jenis_pengguna->where('id_jenis_pengguna', $request->id_jenis_pengguna);

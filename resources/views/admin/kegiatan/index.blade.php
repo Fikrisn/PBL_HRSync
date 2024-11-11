@@ -54,6 +54,9 @@
                     "url": "{{ route('kegiatan.list') }}",
                     "dataType": "json",
                     "type": "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
                     "data": function (d) {
                         d.id_jenis_kegiatan = $('#id_jenis_kegiatan').val();
                     }

@@ -74,6 +74,9 @@
                     "url": "{{ route('pengguna.list') }}",
                     "dataType": "json",
                     "type": "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
                     "data": function (d) {
                         d.id_jenis_pengguna = $('#id_jenis_pengguna').val();
                     }
