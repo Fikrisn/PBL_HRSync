@@ -269,7 +269,7 @@
                         <li><a href="#home" onclick="showSection('home')">Home</a></li>
                         <li><a href="#about" onclick="showSection('about')">About</a></li>
                         <li><a href="#contact" onclick="showSection('contact')">Contact</a></li>
-                        <li><a href="{{ route('login') }}" class="login-button" id="loginButton">Login</a></li>
+                        <li><a href="{{ url('login') }}" class="login-button" id="loginButton">Login</a></li>
                     </ul>
                 </nav>
             </div>
