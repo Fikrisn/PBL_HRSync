@@ -12,7 +12,6 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Barryvdh\DomPDF\Facade\Pdf;
 
-
 class PenggunaController extends Controller
 {
     // Display the main page for pengguna

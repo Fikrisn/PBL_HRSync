@@ -15,9 +15,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisPenggunaController;
 
-Route::pattern('id', '[0-9]+'); //artinya ketika ada parameter {id}, maka harus berupa angka
-
-
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postlogin'])->name('postlogin');
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth');// New routes for registration
@@ -81,7 +78,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/list', [KegiatanController::class, 'list'])->name('kegiatan.list');           // Display kegiatan data as JSON for DataTables
         Route::get('/create', [KegiatanController::class, 'create']);        // Display form for adding kegiatan
         Route::post('/', [KegiatanController::class, 'store']);              // Store new kegiatan data
-        Route::get('/create_ajax', [KegiatanController::class, 'create_ajax'])->name('kegiatan.create_ajax'); // Display form for adding kegiatan via AJAX
+        Route::get('/create_ajax', [KegiatanController::class, 'create_ajax']); // Display form for adding kegiatan via AJAX
         Route::post('/ajax', [KegiatanController::class, 'store_ajax']);     // Store new kegiatan data via AJAX
         Route::get('/{id}', [KegiatanController::class, 'show']);            // Display kegiatan details
         Route::get('/{id}/show_ajax', [KegiatanController::class, 'show_ajax']); // Display kegiatan details via AJAX

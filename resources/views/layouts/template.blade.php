@@ -6,14 +6,23 @@
   <link rel="icon" href="{{ url('polinema.png') }}" type="image/png">
   <title>{{ $title ?? 'HRSync' }}</title>
 
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
   <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="{{url('/plugins/fontawesome-free/css/all.min.css')}}">
-  <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
+  <link rel="stylesheet" href="{{ url('plugins/fontawesome-free/css/all.min.css') }}">
   <script src="https://kit.fontawesome.com/f2110b96b9.js" crossorigin="anonymous"></script>
+  <!-- DataTables -->
+  <link rel="stylesheet" href="{{ url('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ url('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ url('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="{{ url('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
   <!-- Theme style -->
-  <link rel="stylesheet" href="{{url('/dist/css/adminlte.min.css')}}">
+  <link rel="stylesheet" href="{{ url('dist/css/adminlte.min.css') }}">
+
 </head>
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
@@ -54,14 +63,36 @@
 {{-- push javascript if exist --}}
 
 <!-- jQuery -->
-<script src="{{url('/plugins/jquery/jquery.min.js')}}"></script>
+<script src="{{ url('plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->
-<script src="{{url('/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{ url('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- DataTables & Plugins -->
+<script src="{{ url('plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ url('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ url('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ url('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ url('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ url('plugins/jszip/jszip.min.js') }}"></script>
+<script src="{{ url('plugins/pdfmake/pdfmake.min.js') }}"></script>
+<script src="{{ url('plugins/pdfmake/vfs_fonts.js') }}"></script>
+<script src="{{ url('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+<script src="{{ url('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+<script src="{{ url('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+<!-- jquery-validation -->
+<script src="{{ url('plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+<script src="{{ url('plugins/jquery-validation/additional-methods.min.js') }}"></script>
+<!-- SweetAlert2 -->
+<script src="{{ url('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 <!-- AdminLTE App -->
-<script src="{{url('/dist/js/adminlte.min.js')}}"></script>\
-<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-
+<script src="{{ url('dist/js/adminlte.min.js') }}"></script>
+<script>
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  })
+</script>
 @stack('js')
-
 </body>
 </html>

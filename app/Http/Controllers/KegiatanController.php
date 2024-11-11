@@ -30,7 +30,8 @@ class KegiatanController extends Controller
 
     public function list(Request $request)
     {
-        $kegiatan = KegiatanModel::with(['jenisKegiatan', 'pic', 'anggota'])->select('id_kegiatan', 'judul_kegiatan', 'deskripsi_kegiatan', 'tanggal_mulai', 'tanggal_selesai', 'id_jenis_kegiatan');
+        $kegiatan = KegiatanModel::with(['jenisKegiatan', 'pic', 'anggota'])
+            ->select('id_kegiatan', 'judul_kegiatan', 'deskripsi_kegiatan', 'tanggal_mulai', 'tanggal_selesai', 'id_jenis_kegiatan', 'pic_id');
 
         if ($request->id_kegiatan) {
             $kegiatan->where('id_kegiatan', $request->id_kegiatan);
@@ -42,7 +43,7 @@ class KegiatanController extends Controller
                 return $kegiatan->jenisKegiatan->nama_jenis_kegiatan;
             })
             ->addColumn('pic', function ($kegiatan) {
-                return $kegiatan->pic ? $kegiatan->pic->nama : 'N/A';
+                return $kegiatan->pic->nama ?? 'Tidak ada PIC';
             })
             ->addColumn('anggota', function ($kegiatan) {
                 return $kegiatan->anggota->pluck('nama')->implode(', ');
@@ -88,42 +89,28 @@ class KegiatanController extends Controller
                 ]);
             }
 
-            try {
-                DB::beginTransaction();
+            $kegiatan = KegiatanModel::create([
+                'judul_kegiatan' => $request->judul_kegiatan,
+                'deskripsi_kegiatan' => $request->deskripsi_kegiatan,
+                'tanggal_mulai' => $request->tanggal_mulai,
+                'tanggal_selesai' => $request->tanggal_selesai,
+                'id_jenis_kegiatan' => $request->id_jenis_kegiatan,
+                'pic_id' => $request->pic_id
+            ]);
 
-                $kegiatan = KegiatanModel::create([
-                    'judul_kegiatan' => $request->judul_kegiatan,
-                    'deskripsi_kegiatan' => $request->deskripsi_kegiatan,
-                    'tanggal_mulai' => $request->tanggal_mulai,
-                    'tanggal_selesai' => $request->tanggal_selesai,
-                    'id_jenis_kegiatan' => $request->id_jenis_kegiatan,
-                    'pic_id' => $request->pic_id
-                ]);
+            $anggotaIds = $request->anggota_id;
 
-                $anggotaIds = $request->anggota_id;
+            foreach ($anggotaIds as $anggotaId) {
+                if (empty($anggotaId)) continue;
 
-                foreach ($anggotaIds as $anggotaId) {
-                    if (empty($anggotaId)) continue;
-
-                    $kegiatan->anggota()->attach($anggotaId);
-                }
-
-                DB::commit();
-
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data kegiatan berhasil disimpan'
-                ]);
-            } catch (\Exception $e) {
-                DB::rollBack();
-
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
-                ]);
+                $kegiatan->anggota()->attach($anggotaId);
             }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data kegiatan berhasil disimpan'
+            ]);
         }
-        return redirect('/');
     }
 
     public function show(string $id_kegiatan){
@@ -139,9 +126,15 @@ class KegiatanController extends Controller
         return view('admin.kegiatan.show', ['breadcrumb'=>$breadcrumb, 'page'=>$page, 'activeMenu'=>$activeMenu, 'kegiatan'=>$kegiatan]);
     }
 
-    public function show_ajax(string $id) {
-        $kegiatan = KegiatanModel::find($id);
-        return view('admin.kegiatan.show_ajax', ['kegiatan' => $kegiatan]);
+    public function show_ajax($id)
+    {
+        $kegiatan = KegiatanModel::with(['jenisKegiatan', 'pic', 'anggota'])->find($id);
+
+        if (!$kegiatan) {
+            return view('admin.kegiatan.show_ajax')->with('kegiatan', null);
+        }
+
+        return view('admin.kegiatan.show_ajax', compact('kegiatan'));
     }
 
     public function edit(string $id_kegiatan){
@@ -185,51 +178,40 @@ class KegiatanController extends Controller
         return redirect('/kegiatan')->with('success', 'Data kegiatan berhasil diperbarui');
     }
 
-    public function edit_ajax(string $id)
+    public function edit_ajax($id)
     {
         $kegiatan = KegiatanModel::find($id);
-        return view('admin.kegiatan.edit_ajax', ['kegiatan' => $kegiatan]);
+        $jenis_kegiatan = JenisKegiatanModel::all();
+        $pic = PenggunaModel::all();
+
+        if (!$kegiatan) {
+            return view('admin.kegiatan.edit_ajax')->with('kegiatan', null);
+        }
+
+        return view('admin.kegiatan.edit_ajax', compact('kegiatan', 'jenis_kegiatan', 'pic'));
     }
 
     public function update_ajax(Request $request, $id)
     {
-        if ($request->ajax() || $request->wantsJson()) {
-            $rules = [
-                'judul_kegiatan' => 'required|string|max:100',
-                'deskripsi_kegiatan' => 'required|string',
-                'tanggal_mulai' => 'required|date',
-                'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-                'id_jenis_kegiatan' => 'required|integer',
-                'id_dokumen' => 'required|integer',
-                'jenis_pengguna' => 'required|string',
-                'nama' => 'required|string|max:100',
-                'id_pengguna' => 'required|integer'
-            ];
+        $validatedData = $request->validate([
+            'judul_kegiatan' => 'required|string|max:255',
+            'deskripsi_kegiatan' => 'required|string',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date',
+            'id_jenis_kegiatan' => 'required|exists:jenis_kegiatan,id_jenis_kegiatan',
+            'pic_id' => 'required|exists:users,id',
+        ]);
 
-            $validator = Validator::make($request->all(), $rules);
+        $kegiatan = KegiatanModel::find($id);
+        $kegiatan->judul_kegiatan = $validatedData['judul_kegiatan'];
+        $kegiatan->deskripsi_kegiatan = $validatedData['deskripsi_kegiatan'];
+        $kegiatan->tanggal_mulai = $validatedData['tanggal_mulai'];
+        $kegiatan->tanggal_selesai = $validatedData['tanggal_selesai'];
+        $kegiatan->id_jenis_kegiatan = $validatedData['id_jenis_kegiatan'];
+        $kegiatan->pic_id = $validatedData['pic_id'];
+        $kegiatan->save();
 
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Validasi Gagal',
-                    'msgField' => $validator->errors()
-                ]);
-            }
-            $check = KegiatanModel::find($id);
-            if ($check) {
-                $check->update($request->all());
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data berhasil diupdate'
-                ]);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Data tidak ditemukan'
-                ]);
-            }
-        }
-        return redirect('/');
+        return response()->json(['success' => 'Kegiatan berhasil diperbarui']);
     }
 
     public function destroy(string $id_kegiatan){
