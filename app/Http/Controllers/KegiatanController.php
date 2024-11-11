@@ -76,8 +76,8 @@ class KegiatanController extends Controller
                 'id_jenis_kegiatan' => 'required|integer',
                 'pic_id' => 'required|integer',
                 'anggota_id' => 'required|array|min:1|max:6',
-                'anggota_id.*' => 'integer'
             ];
+
 
             $validator = Validator::make($request->all(), $rules);
 
@@ -256,5 +256,25 @@ class KegiatanController extends Controller
             }
         }
         return redirect('/');
+    }
+    
+    public function events()
+    {
+        // Ambil semua data kegiatan dari database
+        $kegiatans = KegiatanModel::all();
+
+        // Ubah data kegiatan ke format yang dibutuhkan FullCalendar
+        $events = $kegiatans->map(function ($kegiatan) {
+            return [
+                'title' => $kegiatan->judul_kegiatan,           // Judul kegiatan sebagai judul event
+                'start' => $kegiatan->tanggal_mulai,            // Tanggal mulai kegiatan
+                'end' => $kegiatan->tanggal_selesai,            // Tanggal selesai kegiatan
+                'description' => $kegiatan->deskripsi_kegiatan, // Deskripsi kegiatan (opsional)
+                'id' => $kegiatan->id                           // ID kegiatan (opsional, untuk kebutuhan lain)
+            ];
+        });
+
+        // Kembalikan data dalam bentuk JSON
+        return response()->json($events);
     }
 }

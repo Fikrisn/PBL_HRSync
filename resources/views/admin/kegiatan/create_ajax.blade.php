@@ -1,30 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Data Kegiatan</title>
-    <link rel="stylesheet" href="path/to/your/css/file.css">
-    <style>
-        .modal-header.bg-primary {
-            background: linear-gradient(45deg, #007bff, #0056b3);
-        }
-        .modal-header .close {
-            color: #fff;
-        }
-        .form-group label {
-            font-weight: bold;
-        }
-        .form-control {
-            border-radius: 0.25rem;
-        }
-        .error-text {
-            font-size: 0.875rem;
-        }
-    </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
     <form action="{{ url('/kegiatan/ajax') }}" method="POST" id="form-tambah">
         @csrf
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
@@ -190,7 +163,7 @@
                         contentType: false,
                         success: function(response) {
                             if (response.status) {
-                                $('#modal-master').modal('hide');
+                                $('#myModal').modal('hide');
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Berhasil',
