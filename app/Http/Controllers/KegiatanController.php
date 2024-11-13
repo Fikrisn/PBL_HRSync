@@ -74,13 +74,12 @@ class KegiatanController extends Controller
                 'tanggal_mulai' => 'required|date',
                 'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
                 'id_jenis_kegiatan' => 'required|integer',
-                'pic_id' => 'required|integer',
-                'anggota_id' => 'required|array|min:1|max:6',
+                'pic_id' => 'required|integer|exists:pengguna,id',
+                'anggota_id' => 'required|array|min:1|max:6|exists:pengguna,id',
             ];
-
-
+    
             $validator = Validator::make($request->all(), $rules);
-
+    
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
@@ -88,7 +87,7 @@ class KegiatanController extends Controller
                     'msgField' => $validator->errors()
                 ]);
             }
-
+    
             $kegiatan = KegiatanModel::create([
                 'judul_kegiatan' => $request->judul_kegiatan,
                 'deskripsi_kegiatan' => $request->deskripsi_kegiatan,
@@ -97,22 +96,20 @@ class KegiatanController extends Controller
                 'id_jenis_kegiatan' => $request->id_jenis_kegiatan,
                 'pic_id' => $request->pic_id
             ]);
-
+    
             $anggotaIds = $request->anggota_id;
-
+    
             foreach ($anggotaIds as $anggotaId) {
-                if (empty($anggotaId)) continue;
-
                 $kegiatan->anggota()->attach($anggotaId);
             }
-
+    
             return response()->json([
                 'status' => true,
                 'message' => 'Data kegiatan berhasil disimpan'
             ]);
         }
     }
-
+    
     public function show(string $id_kegiatan){
         $kegiatan = KegiatanModel::find($id_kegiatan);
         $breadcrumb = (object)[

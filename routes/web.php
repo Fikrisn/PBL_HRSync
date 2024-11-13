@@ -2,18 +2,18 @@
 
 use App\Http\Controllers\PoinDosenController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\ProfilController;
-use App\Http\Controllers\stokcontroller;
-use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\JenisPenggunaController;
+use App\Http\Controllers\JenisPenggunaController; 
+use App\Http\Controllers\StatistikController;
+use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\DosenA\KegiatanController as DosenAKegiatanController;
 
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postlogin'])->name('postlogin');
@@ -57,8 +57,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/create_ajax', [PenggunaController::class, 'create_ajax'])->name('pengguna.create_ajax'); // Menampilkan halaman form tambah pengguna dengan ajax
         Route::post('/ajax', [PenggunaController::class, 'store_ajax']); // menyimpan data pengguna baru Ajax
         Route::get('/{id}', [PenggunaController::class, 'show']);        // menampilkan detail pengguna
-        Route::get('/{id}/show_ajax', [PenggunaController::class, 'show_ajax']); // menampilkan detail pengguna Ajax
-        Route::get('/{id}/edit', [PenggunaController::class, 'edit']);   // menampilkan halaman form edit pengguna
+Route::get('/jenis_pengguna/{id}/show_ajax', [JenisPenggunaController::class, 'show_ajax'])->name('jenis_pengguna.show_ajax');Route::get('/{id}/edit', [PenggunaController::class, 'edit']);   // menampilkan halaman form edit pengguna
         Route::put('/{id}', [PenggunaController::class, 'update']);      // menyimpan perubahan data pengguna
         Route::get('/{id}/edit_ajax', [PenggunaController::class, 'edit_ajax']); // menampilkan halaman form edit pengguna Ajax
         Route::put('/{id}/update_ajax', [PenggunaController::class, 'update_ajax']); // menyimpan perubahan data pengguna Ajax
@@ -73,7 +72,7 @@ Route::middleware(['auth'])->group(function () {
     });
     
 
-    Route::group(['prefix' => 'kegiatan', 'middleware' => ['authorize:ADM,PMN,DPC,DSA']], function () {
+    Route::group(['prefix' => 'kegiatan', 'middleware' => ['authorize:ADM,PMN,DPC']], function () {
         Route::get('/', [KegiatanController::class, 'index']);               // Display main page for kegiatan
         Route::post('/list', [KegiatanController::class, 'list'])->name('kegiatan.list');           // Display kegiatan data as JSON for DataTables
         Route::get('/create', [KegiatanController::class, 'create']);        // Display form for adding kegiatan
@@ -113,4 +112,30 @@ Route::middleware(['auth'])->group(function () {
     //     Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
     // });
 
+    Route::group(['prefix'=>'poindosen','middleware'=>['authorize:ADM,PMN,DPC,DSA']], function () {
+        Route::get('/', [PoinDosenController::class, 'index'])->name('poindosen.index');          // menampilkan halaman awal poin d
+    });
+
+    Route::group(['prefix'=>'statistik','middleware'=>['authorize:ADM,PMN,DPC,DSA']], function () {
+        Route::get('/', [StatistikController::class, 'index'])->name('statistik.index');          // menampilkan halaman awal poin d
+    });
+
+    Route::prefix(['prefix'=>'dosenA/kegiatan','middleware'=>['authorize:ADM,PMN,DPC,DSA']], function () {
+        Route::get('/', [DosenAKegiatanController::class, 'index'])->name('kegiatan.index'); // Halaman utama daftar kegiatan
+        Route::post('/list', [KegiatanController::class, 'list'])->name('kegiatan.list'); // Data kegiatan untuk DataTable
+        Route::get('/create', [KegiatanController::class, 'create'])->name('kegiatan.create'); // Form tambah kegiatan (jika diperlukan)
+        Route::post('/store', [KegiatanController::class, 'store'])->name('kegiatan.store'); // Proses simpan kegiatan baru
+        Route::get('/edit/{id}', [KegiatanController::class, 'edit'])->name('kegiatan.edit'); // Form edit kegiatan
+        Route::post('/update/{id}', [KegiatanController::class, 'update'])->name('kegiatan.update'); // Proses update kegiatan
+        Route::get('/destroy/{id}', [KegiatanController::class, 'destroy'])->name('kegiatan.destroy'); // Hapus kegiatan
+    });
+
+    Route::prefix('dosenA.agenda')->group(function () {
+        Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda.index'); // Halaman utama daftar agenda
+        Route::post('/list', [AgendaController::class, 'list'])->name('agenda.list'); // Data agenda untuk DataTable
+    });
+
+    Route::group(['prefix'=>'poinku','middleware'=>['authorize:ADM,PMN,DPC,DSA']], function () {
+        Route::get('/', [PoinDosenController::class, 'index'])->name('poinku.index');          // menampilkan halaman awal poin d
+    });
 });

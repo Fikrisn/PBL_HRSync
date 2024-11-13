@@ -57,23 +57,6 @@ class JenisPenggunaController extends Controller
             ->make(true);
     }
 
-    public function show(string $id)
-    {
-        $jenis_pengguna = JenisPenggunaModel::find($id);
-
-        $breadcrumb = (object)[
-            'title' => 'Detail Jenis Pengguna',
-            'list' => ['Home', 'Jenis Pengguna', 'Detail']
-        ];
-
-        $page = (object)[
-            'title' => 'Detail Jenis Pengguna'
-        ];
-
-        $activeMenu = 'jenis_pengguna';
-        return view('admin.jenis_pengguna.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'jenis_pengguna' => $jenis_pengguna, 'activeMenu' => $activeMenu]);
-    }
-
     public function show_ajax(string $id)
     {
         $jenis_pengguna = JenisPenggunaModel::find($id);

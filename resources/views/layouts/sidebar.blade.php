@@ -33,12 +33,12 @@
               <p>Data Dosen</p>
             </a>
           </li>
-          <li class="nav-item">
+          {{-- <li class="nav-item">
             <a href="{{ url('/poindosen')}}" class="nav-link {{($activeMenu == 'poindosen')? 'active' : ''}}">
                 <i class="nav-icon fa-solid fa-coins"></i>
                 <p>Poin Dosen</p>
             </a>
-          </li>
+          </li> --}}
           <li class="nav-header">Data Kegiatan</li>
           <li class="nav-item">
             <a href="{{ url('/kegiatan')}}" class="nav-link {{($activeMenu == 'kegiatan')? 'active' : ''}}">
@@ -111,20 +111,20 @@
         @if(auth()->user()->jenispengguna->jenis_kode == "DSA")
         <li class="nav-header">Data Kegiatan</li>
           <li class="nav-item">
-            <a href="{{ url('/level')}}" class="nav-link {{($activeMenu == 'level')? 'active' : ''}}">
+            <a href="{{ url('/dosenA/kegiatan')}}" class="nav-link {{($activeMenu == 'kegiatan')? 'active' : ''}}">
               <i class="nav-icon fas fa-layer-group"></i>
               <p>Kegiatan</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ url('/stok')}}" class="nav-link {{($activeMenu == 'stok')? 'active' : ''}}">
+            <a href="{{ url('/agenda')}}" class="nav-link {{($activeMenu == 'agenda')? 'active' : ''}}">
               <i class="nav-icon fas fa-cubes"></i>
               <p>Agenda Kegiatan </p>
             </a>
           </li>
           <li class="nav-header">Poin</li>
           <li class="nav-item">
-            <a href="{{ url('/pengguna')}}" class="nav-link {{($activeMenu == 'pengguna')? 'active' : ''}}">
+            <a href="{{ url('/poinku')}}" class="nav-link {{($activeMenu == 'poinku')? 'active' : ''}}">
               <i class="nav-icon fa-solid fa-coins"></i>
               <p>Poin Ku</p>
             </a>

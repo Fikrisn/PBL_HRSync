@@ -91,23 +91,6 @@ class PenggunaController extends Controller
         return redirect('/admin/pengguna')->with('success', 'Data pengguna berhasil disimpan');
     }
 
-    public function show(string $id)
-    {
-        $pengguna = PenggunaModel::with('jenisPengguna')->find($id);
-
-        $breadcrumb = (object)[
-            'title' => 'Detail Pengguna',
-            'list' => ['Home', 'Pengguna', 'Detail']
-        ];
-
-        $page = (object)[
-            'title' => 'Detail Pengguna'
-        ];
-
-        $activeMenu = 'pengguna';
-        return view('admin.pengguna.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'pengguna' => $pengguna, 'activeMenu' => $activeMenu]);
-    }
-
     public function show_ajax(string $id)
     {
         $pengguna = PenggunaModel::with('jenisPengguna')->find($id);
