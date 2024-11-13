@@ -26,7 +26,7 @@
                                 <td>{{ $poin->poin }}</td>
                             </tr>
                         @endforeach --}}
-                    </tbody>                    
+                    </tbody>
                 </table>
             </div>
         </div>

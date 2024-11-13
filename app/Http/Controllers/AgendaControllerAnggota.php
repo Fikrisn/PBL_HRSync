@@ -6,11 +6,17 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\AgendaModel;
 
-class AgendaController extends Controller
+class AgendaControllerAnggota extends Controller
 {
     public function index()
     {
-        return view('dosenA.agenda.index');
+        $breadcrumb = (object)[
+            'title' => 'Daftar Agenda',
+            'list' => ['Home', 'Agenda'],
+        ];
+
+        $activeMenu = 'agenda';
+        return view('dosenA.agenda.index', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
     }
 
     // public function list(Request $request)
