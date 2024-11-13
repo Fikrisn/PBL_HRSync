@@ -111,7 +111,7 @@
         @if(auth()->user()->jenispengguna->jenis_kode == "DSA")
         <li class="nav-header">Data Kegiatan</li>
           <li class="nav-item">
-            <a href="{{ url('/dosenA/kegiatan')}}" class="nav-link {{($activeMenu == 'kegiatan')? 'active' : ''}}">
+            <a href="{{ url('/kegiatan')}}" class="nav-link {{($activeMenu == 'kegiatan')? 'active' : ''}}">
               <i class="nav-icon fas fa-layer-group"></i>
               <p>Kegiatan</p>
             </a>

@@ -5,7 +5,7 @@
     <div class="card-header">
         <h3 class="card-title">Daftar Agenda</h3>
         <div class="card-tools">
-            <button onclick="modalAction('{{ url('agenda/create') }}')" class="btn btn-sm btn-success mt-1">Tambah Agenda</button>
+            <a href="{{ url('/agenda/export_pdf') }}" class="btn btn-sm btn-warning mt-1"><i class="fa fa-file-pdf"></i> Export Agenda (PDF)</a>
         </div>
     </div>
     <div class="card-body">

@@ -8,13 +8,22 @@ use App\Models\PenggunaModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class KegiatanController extends Controller
+class KegiatanControllerAnggota extends Controller
 {
     // Menampilkan halaman daftar kegiatan
     public function index()
     {
+        $breadcrumb = (object)[
+            'title' => 'Daftar Kegiatan',
+            'list' => ['Home', 'Kegiatan'],
+        ];
+
+
         $pengguna = PenggunaModel::all(); // Ambil data pengguna untuk pilihan PIC jika diperlukan
-        return view('dosenA.kegiatan.index', compact('pengguna'));
+
+
+        $activeMenu = 'kegiatan';
+        return view('dosenA.kegiatan.index', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu, 'pengguna' => $pengguna]);
     }
 
     // Mengambil data kegiatan untuk DataTable

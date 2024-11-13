@@ -14,7 +14,7 @@
                     <thead>
                         <tr>
                             <th>Nama Kegiatan</th>
-                            <th>Nama Dosen</th>
+                            <th>Peran</th>
                             <th>Poin</th>
                         </tr>
                     </thead>
@@ -26,7 +26,7 @@
                                 <td>{{ $poin->poin }}</td>
                             </tr>
                         @endforeach --}}
-                    </tbody>                    
+                    </tbody>
                 </table>
             </div>
         </div>

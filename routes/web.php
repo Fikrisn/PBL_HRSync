@@ -10,14 +10,14 @@ use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\JenisPenggunaController; 
+use App\Http\Controllers\JenisPenggunaController;
 use App\Http\Controllers\StatistikController;
-use App\Http\Controllers\AgendaController;
-use App\Http\Controllers\DosenA\KegiatanController as DosenAKegiatanController;
+use App\Http\Controllers\AgendaControllerAnggota;
+use App\Http\Controllers\KegiatanControllerAnggota;
 
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postlogin'])->name('postlogin');
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth');// New routes for registration
+Route::post('logout', [AuthController::class, 'logout'])->middleware('auth'); // New routes for registration
 
 Route::get('/register', [AuthController::class, 'postregister']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -27,7 +27,7 @@ Route::get('/', [WelcomeController::class, 'landingPage'])->name('landingpage');
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::group(['prefix'=>'jenis_pengguna','middleware'=>['authorize:ADM']], function () {
+    Route::group(['prefix' => 'jenis_pengguna', 'middleware' => ['authorize:ADM']], function () {
         Route::get('/', [JenisPenggunaController::class, 'index'])->name('jenis_pengguna.index');          // menampilkan halaman awal jenis pengguna
         Route::post('/list', [JenisPenggunaController::class, 'list'])->name('jenis_pengguna.list');      // menampilkan data jenis pengguna dalam json untuk datatables
         Route::get('/create', [JenisPenggunaController::class, 'create'])->name('jenis_pengguna.create');   // menampilkan halaman form tambah jenis pengguna
@@ -48,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/export_excel', [JenisPenggunaController::class, 'export_excel']); // export excel
         Route::get('/export_pdf', [JenisPenggunaController::class, 'export_pdf']); // export pdf
     });
-    
+
     Route::group(['prefix' => 'pengguna', 'middleware' => ['authorize:ADM']], function () {
         Route::get('/', [PenggunaController::class, 'index'])->name('pengguna.index');          // menampilkan halaman awal pengguna
         Route::post('/list', [PenggunaController::class, 'list'])->name('pengguna.list');      // menampilkan data pengguna dalam json untuk datatables
@@ -57,7 +57,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/create_ajax', [PenggunaController::class, 'create_ajax'])->name('pengguna.create_ajax'); // Menampilkan halaman form tambah pengguna dengan ajax
         Route::post('/ajax', [PenggunaController::class, 'store_ajax']); // menyimpan data pengguna baru Ajax
         Route::get('/{id}', [PenggunaController::class, 'show']);        // menampilkan detail pengguna
-Route::get('/jenis_pengguna/{id}/show_ajax', [JenisPenggunaController::class, 'show_ajax'])->name('jenis_pengguna.show_ajax');Route::get('/{id}/edit', [PenggunaController::class, 'edit']);   // menampilkan halaman form edit pengguna
+        Route::get('/jenis_pengguna/{id}/show_ajax', [JenisPenggunaController::class, 'show_ajax'])->name('jenis_pengguna.show_ajax');
+        Route::get('/{id}/edit', [PenggunaController::class, 'edit']);   // menampilkan halaman form edit pengguna
         Route::put('/{id}', [PenggunaController::class, 'update']);      // menyimpan perubahan data pengguna
         Route::get('/{id}/edit_ajax', [PenggunaController::class, 'edit_ajax']); // menampilkan halaman form edit pengguna Ajax
         Route::put('/{id}/update_ajax', [PenggunaController::class, 'update_ajax']); // menyimpan perubahan data pengguna Ajax
@@ -70,7 +71,7 @@ Route::get('/jenis_pengguna/{id}/show_ajax', [JenisPenggunaController::class, 's
         Route::get('/export_pdf', [PenggunaController::class, 'export_pdf']);     // export data pengguna ke pdf
         Route::get('/profil/edit', [PenggunaController::class, 'editProfile'])->name('profil.edit');
     });
-    
+
 
     Route::group(['prefix' => 'kegiatan', 'middleware' => ['authorize:ADM,PMN,DPC']], function () {
         Route::get('/', [KegiatanController::class, 'index']);               // Display main page for kegiatan
@@ -93,9 +94,8 @@ Route::get('/jenis_pengguna/{id}/show_ajax', [JenisPenggunaController::class, 's
         Route::get('/export_excel', [KegiatanController::class, 'export_excel']); // Export kegiatan data to Excel
         Route::get('/export_pdf', [KegiatanController::class, 'export_pdf']); // Export kegiatan data to PDF
     });
-    
 
-    Route::group(['prefix' =>'profil'],function(){
+    Route::group(['prefix' => 'profil'], function () {
         Route::get('/', [ProfilController::class, 'index'])->name('profil.index');
         Route::patch('/{id}', [ProfilController::class, 'update'])->name('profil.update');
     });
@@ -112,30 +112,30 @@ Route::get('/jenis_pengguna/{id}/show_ajax', [JenisPenggunaController::class, 's
     //     Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
     // });
 
-    Route::group(['prefix'=>'poindosen','middleware'=>['authorize:ADM,PMN,DPC,DSA']], function () {
+    Route::group(['prefix' => 'poindosen', 'middleware' => ['authorize:ADM,PMN,DPC,DSA']], function () {
         Route::get('/', [PoinDosenController::class, 'index'])->name('poindosen.index');          // menampilkan halaman awal poin d
     });
 
-    Route::group(['prefix'=>'statistik','middleware'=>['authorize:ADM,PMN,DPC,DSA']], function () {
+    Route::group(['prefix' => 'statistik', 'middleware' => ['authorize:ADM,PMN,DPC,DSA']], function () {
         Route::get('/', [StatistikController::class, 'index'])->name('statistik.index');          // menampilkan halaman awal poin d
     });
 
-    Route::prefix(['prefix'=>'dosenA/kegiatan','middleware'=>['authorize:ADM,PMN,DPC,DSA']], function () {
-        Route::get('/', [DosenAKegiatanController::class, 'index'])->name('kegiatan.index'); // Halaman utama daftar kegiatan
-        Route::post('/list', [KegiatanController::class, 'list'])->name('kegiatan.list'); // Data kegiatan untuk DataTable
-        Route::get('/create', [KegiatanController::class, 'create'])->name('kegiatan.create'); // Form tambah kegiatan (jika diperlukan)
-        Route::post('/store', [KegiatanController::class, 'store'])->name('kegiatan.store'); // Proses simpan kegiatan baru
-        Route::get('/edit/{id}', [KegiatanController::class, 'edit'])->name('kegiatan.edit'); // Form edit kegiatan
-        Route::post('/update/{id}', [KegiatanController::class, 'update'])->name('kegiatan.update'); // Proses update kegiatan
-        Route::get('/destroy/{id}', [KegiatanController::class, 'destroy'])->name('kegiatan.destroy'); // Hapus kegiatan
+    Route::group(['prefix' => 'kegiatan', 'middleware' => ['authorize:ADM,PMN,DPC,DSA']], function () {
+        Route::get('/', [KegiatanControllerAnggota::class, 'index'])->name('kegiatan.index'); // Halaman utama daftar kegiatan
+        Route::post('/list', [KegiatanControllerAnggota::class, 'list'])->name('kegiatan.list'); // Data kegiatan untuk DataTable
+        Route::get('/create', [KegiatanControllerAnggota::class, 'create'])->name('kegiatan.create'); // Form tambah kegiatan (jika diperlukan)
+        Route::post('/store', [KegiatanControllerAnggota::class, 'store'])->name('kegiatan.store'); // Proses simpan kegiatan baru
+        Route::get('/edit/{id}', [KegiatanControllerAnggota::class, 'edit'])->name('kegiatan.edit'); // Form edit kegiatan
+        Route::post('/update/{id}', [KegiatanControllerAnggota::class, 'update'])->name('kegiatan.update'); // Proses update kegiatan
+        Route::get('/destroy/{id}', [KegiatanControllerAnggota::class, 'destroy'])->name('kegiatan.destroy'); // Hapus kegiatan
     });
 
-    Route::prefix('dosenA.agenda')->group(function () {
-        Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda.index'); // Halaman utama daftar agenda
-        Route::post('/list', [AgendaController::class, 'list'])->name('agenda.list'); // Data agenda untuk DataTable
+    Route::group(['prefix' => 'agenda', 'middleware' => ['authorize:ADM,PMN,DPC,DSA']], function () {
+        Route::get('/', [AgendaControllerAnggota::class, 'index'])->name('agenda.index'); // Halaman utama daftar agenda
+        Route::post('/list', [AgendaControllerAnggota::class, 'list'])->name('agenda.list'); // Data agenda untuk DataTable
     });
 
-    Route::group(['prefix'=>'poinku','middleware'=>['authorize:ADM,PMN,DPC,DSA']], function () {
+    Route::group(['prefix' => 'poinku', 'middleware' => ['authorize:ADM,PMN,DPC,DSA']], function () {
         Route::get('/', [PoinDosenController::class, 'index'])->name('poinku.index');          // menampilkan halaman awal poin d
     });
 });
