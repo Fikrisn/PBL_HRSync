@@ -14,6 +14,8 @@ use App\Http\Controllers\JenisPenggunaController;
 use App\Http\Controllers\StatistikController;
 use App\Http\Controllers\AgendaControllerAnggota;
 use App\Http\Controllers\KegiatanControllerAnggota;
+use App\Http\Controllers\PoinControllerAnggota;
+use App\Http\Controllers\KegiatanControllerPIC;
 
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postlogin'])->name('postlogin');
@@ -136,6 +138,16 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::group(['prefix' => 'poinku', 'middleware' => ['authorize:ADM,PMN,DPC,DSA']], function () {
-        Route::get('/', [PoinDosenController::class, 'index'])->name('poinku.index');          // menampilkan halaman awal poin d
+        Route::get('/', [PoinControllerAnggota::class, 'index'])->name('poinku.index');          // menampilkan halaman awal poin d
+    });
+
+    Route::group(['prefix' => 'kegiatan', 'middleware' => ['authorize:ADM,PMN,DPC,DSA']], function () {
+        Route::get('/', [KegiatanControllerPIC::class, 'index'])->name('kegiatan.index'); // Halaman utama daftar kegiatan
+        Route::post('/list', [KegiatanControllerPIC::class, 'list'])->name('kegiatan.list'); // Data kegiatan untuk DataTable
+        Route::get('/create', [KegiatanControllerPIC::class, 'create'])->name('kegiatan.create'); // Form tambah kegiatan (jika diperlukan)
+        Route::post('/store', [KegiatanControllerPIC::class, 'store'])->name('kegiatan.store'); // Proses simpan kegiatan baru
+        Route::get('/edit/{id}', [KegiatanControllerPIC::class, 'edit'])->name('kegiatan.edit'); // Form edit kegiatan
+        Route::post('/update/{id}', [KegiatanControllerPIC::class, 'update'])->name('kegiatan.update'); // Proses update kegiatan
+        Route::get('/destroy/{id}', [KegiatanControllerPIC::class, 'destroy'])->name('kegiatan.destroy'); // Hapus kegiatan
     });
 });
