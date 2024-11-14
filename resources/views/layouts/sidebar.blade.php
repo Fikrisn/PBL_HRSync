@@ -15,7 +15,7 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
           <a href="{{ url('/dashboard')}}" class="nav-link {{($activeMenu == 'dashboard')? 'active' : ''}}">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <i class="nav-icon fas fa-tachometer-alt"></i>   
             <p>Dashboard</p>
           </a>
         </li>
@@ -77,7 +77,7 @@
         @if(auth()->user()->jenispengguna->jenis_kode == "DPC")
         <li class="nav-header">Data Kegiatan</li>
           <li class="nav-item">
-            <a href="{{ url('/level')}}" class="nav-link {{($activeMenu == 'level')? 'active' : ''}}">
+            <a href="{{ url('/kegiatan')}}" class="nav-link {{($activeMenu == 'level')? 'active' : ''}}">
               <i class="nav-icon fas fa-layer-group"></i>
               <p>Kegiatan</p>
             </a>
@@ -104,7 +104,7 @@
           <li class="nav-item">
             <a href="{{ url('/stok')}}" class="nav-link {{($activeMenu == 'stok')? 'active' : ''}}">
               <i class="nav-icon fas fa-cubes"></i>
-              <p>Statistik </p>
+              <p>Pointku </p>
             </a>
           </li>
         @endif
